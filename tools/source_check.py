@@ -17,6 +17,7 @@ from pymarkdown.api import PyMarkdownApi
 POSTS_DIR = Path("blog") / "posts"
 LINT_CONFIG = Path(__file__).parent.parent / ".pymarkdown.json"
 H1 = re.compile(r"^# \S", re.MULTILINE)
+CODE_FENCE = re.compile(r"^(```|~~~).*?^\1", re.MULTILINE | re.DOTALL)
 
 # Separated digit groups, e.g. +1 (555) 010-0199 or 555-010-0199. ISO dates
 # (2026-01-15) don't match because their last group is too short.
@@ -35,13 +36,17 @@ class Violation:
 
 
 def split_front_matter(text: str) -> tuple[str | None, str]:
-    """The raw front matter block (None if absent) and the body after it."""
+    """The raw front matter block (None if absent or never closed) and the body after it."""
     if not text.startswith("---\n"):
         return None, text
     end = text.find("\n---", 4)
     if end == -1:
         return None, text
     return text[4:end], text[end + 4 :]
+
+
+def without_code_blocks(text: str) -> str:
+    return CODE_FENCE.sub("", text)
 
 
 def check_post(
@@ -52,13 +57,15 @@ def check_post(
         found.append(Violation(path, "post is missing date"))
     elif not isinstance(meta["date"], datetime.date):  # YAML parses ISO dates itself
         found.append(Violation(path, f"malformed date {meta['date']!r} (use YYYY-MM-DD)"))
-    if "title" not in meta and not H1.search(body):
+    if "title" not in meta and not H1.search(without_code_blocks(body)):
         found.append(Violation(path, "post is missing title (no title field or # heading)"))
     if "draft" in meta and not isinstance(meta["draft"], bool):
         found.append(Violation(path, f"draft must be true or false, got {meta['draft']!r}"))
     categories = meta.get("categories")
     if not categories:
         found.append(Violation(path, "post is missing categories"))
+    elif not isinstance(categories, list):
+        found.append(Violation(path, f"categories must be a list, got {categories!r}"))
     else:
         for category in categories:
             if category not in allowed_categories:
@@ -68,9 +75,10 @@ def check_post(
 
 def check_personal_data(path: Path, text: str) -> list[Violation]:
     found: list[Violation] = []
-    if match := PHONE.search(text):
+    prose = without_code_blocks(text)
+    if match := PHONE.search(prose):
         found.append(Violation(path, f"looks like a phone number: {match.group().strip()!r}"))
-    if match := STREET.search(text):
+    if match := STREET.search(prose):
         found.append(Violation(path, f"looks like a street address: {match.group()!r}"))
     return found
 
@@ -93,13 +101,19 @@ def check_content(content_dir: Path, allowed_categories: list[str]) -> list[Viol
         text = path.read_text(encoding="utf-8")
         raw, body = split_front_matter(text)
         meta: dict = {}
+        if raw is None and text.startswith("---\n"):
+            found.append(Violation(path, "front matter is not closed (missing closing ---)"))
+            continue
         if raw is not None:
             try:
                 loaded = yaml.safe_load(raw)
             except yaml.YAMLError:
                 found.append(Violation(path, "front matter is not valid YAML"))
                 continue
-            meta = loaded if isinstance(loaded, dict) else {}
+            if loaded is not None and not isinstance(loaded, dict):
+                found.append(Violation(path, "front matter is not valid YAML key/value pairs"))
+                continue
+            meta = loaded or {}
         if path.relative_to(content_dir).is_relative_to(POSTS_DIR):
             found.extend(check_post(path, meta, body, allowed_categories))
         found.extend(check_personal_data(path, text))

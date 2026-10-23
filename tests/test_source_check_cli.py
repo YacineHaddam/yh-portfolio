@@ -1,4 +1,8 @@
-"""Source check as a command: exit status and output for a zensical.toml."""
+"""Source check as a command: exit status and output for a zensical.toml.
+
+The real content is checked by `make check`, not here, so adding or deleting
+real posts never breaks a test.
+"""
 
 import subprocess
 import sys
@@ -23,7 +27,7 @@ def test_fails_and_names_file_and_reason_for_a_bad_post() -> None:
     assert "category 'not-allowed' is not allowed" in result.stdout
 
 
-def test_real_content_passes() -> None:
-    result = run_check(ROOT / "zensical.toml")
+def test_passes_silently_for_valid_content() -> None:
+    result = run_check(ROOT / "tests" / "fixture_site" / "zensical.toml")
     assert result.stdout == ""
     assert result.returncode == 0

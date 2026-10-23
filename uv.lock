@@ -341,6 +341,7 @@ name = "yh-portfolio"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "pyyaml" },
     { name = "tzdata" },
     { name = "zensical" },
 ]
@@ -353,6 +354,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "pyyaml", specifier = ">=6" },
     { name = "tzdata", specifier = ">=2026.5" },
     { name = "zensical", specifier = "==0.0.71" },
 ]
