@@ -1,6 +1,6 @@
 ---
 title: Deploy to GitHub Pages via CI
-status: ready-for-agent
+status: done
 blocked-by: [01]
 ---
 
@@ -12,11 +12,11 @@ The human-only steps get a `/wizard` script: creating the public `yh-portfolio` 
 
 **Blocked by:** 01 (Site skeleton that builds, with a check command)
 
-**Status:** ready-for-agent
+**Status:** done
 
 - [x] The CI workflow installs the locked `uv` environment (no dependency caching, per Zensical docs) and runs `check`.
-- [ ] PRs run `check` but never deploy. `main` runs `check`, builds with strict and clean, and deploys.
-- [ ] A failing `check` blocks deployment.
+- [x] PRs run `check` but never deploy. `main` runs `check`, builds with strict and clean, and deploys.
+- [x] A failing `check` blocks deployment.
 - [x] `site_url` is set to the GitHub Pages project address and is the only place the base URL is defined.
 - [x] A wizard script walks the author through the repo, remote and Pages-source steps.
 - [x] Verified: the live URL serves the skeleton, and its nav links resolve under the `/yh-portfolio/` path.
@@ -38,9 +38,8 @@ The wizard was written from scratch because the wizard skill's `template.sh` is 
 
 The author ran the wizard, set `site_url` to `https://YacineHaddam.github.io/yh-portfolio/`, pushed `main` and set the Pages source to GitHub Actions. The push first failed on GitHub's private-email protection (the commits carried a work address), so the 21 local commits were re-authored with the GitHub noreply address before pushing.
 
-Verified: the workflow ran on `main` and the site deployed. The author reports that everything works correctly, and a screenshot shows a post live at `https://yacinehaddam.github.io/yh-portfolio/blog/2026/10/21/hello-world/`. That covers the locked-`uv` check, the live URL under `/yh-portfolio/`, and the single `site_url`. The nav links were checked by the author, not by me.
+Verified: the workflow ran on `main` and the site deployed. The author reports that everything works correctly, and a screenshot shows a post live at `https://yacinehaddam.github.io/yh-portfolio/blog/2026/10/21/hello-world/`. The nav links were checked by the author, not by me.
 
-Not verified, so left unticked:
+Verified with a throwaway PR (branch `test/ci-failing-check`, since deleted, closed unmerged) that added a link to a page that does not exist. On the PR, `Documentation / check` ran and failed in the strict build (`index.md:8`, "page does not exist", then `make check` exited non-zero), and `Documentation / deploy` was skipped; GitHub reported "This branch has not been deployed". Evidence is the author's screenshot and the pasted job log.
 
-- A pull request has not been opened, so "PRs run `check` but never deploy" is untested. The `main` half (check, strict clean build, deploy) is confirmed by the deployed site.
-- "A failing `check` blocks deployment" needs a throwaway PR or push with a deliberate failure. It is expected from `deploy` having `needs: check`, but has not been exercised.
+Caveat on "A failing `check` blocks deployment": the deploy was skipped on the PR because the job runs only for pushes to `main`, so the run itself does not isolate the `needs: check` gate. Blocking on `main` rests on `deploy` declaring `needs: check` (documented GitHub behaviour). A failing push to `main` was deliberately not tried against the live branch.
