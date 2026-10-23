@@ -12,4 +12,7 @@ __pycache__/
 .uv-cache/
 .uv-python/
 
+# Local copy of the Zensical docs (make refresh-docs)
+references/
+
 .DS_Store

@@ -1,4 +1,4 @@
-.PHONY: serve check
+.PHONY: serve check refresh-docs
 
 serve:
 	uv run zensical serve
@@ -11,3 +11,7 @@ check:
 	uv run python tools/source_check.py tests/fixture_site/zensical.toml
 	uv run zensical build --strict --clean
 	uv run pytest
+
+# Local copy of the Zensical docs, for reference (gitignored).
+refresh-docs:
+	bash scripts/refresh-docs.sh
