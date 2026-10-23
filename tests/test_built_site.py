@@ -33,10 +33,12 @@ def built_site() -> Path:
     return FIXTURE / "site"
 
 
-def _text_files(site: Path) -> dict[Path, str]:
+@pytest.fixture(scope="session")
+def site_text(built_site: Path) -> dict[Path, str]:
+    """Every text file in the built site, keyed by its path relative to the site."""
     return {
-        p.relative_to(site): p.read_text(encoding="utf-8")
-        for p in sorted(site.rglob("*"))
+        p.relative_to(built_site): p.read_text(encoding="utf-8", errors="replace")
+        for p in sorted(built_site.rglob("*"))
         if p.is_file() and p.suffix in TEXT_SUFFIXES
     }
 
@@ -46,17 +48,19 @@ def test_section_page_exists(built_site: Path, section: str) -> None:
     assert (built_site / SECTION_PAGES[section]).is_file()
 
 
-def test_published_post_has_its_own_page(built_site: Path) -> None:
+def test_published_post_has_its_own_page(site_text: dict[Path, str]) -> None:
     pages = [
         path
-        for path, text in _text_files(built_site).items()
+        for path, text in site_text.items()
         if path.suffix == ".html" and "PUBLISHED-BODY-MARKER" in text
     ]
     assert len(pages) == 1
 
 
-def test_blog_index_shows_excerpt_author_and_reading_time(built_site: Path) -> None:
-    index = (built_site / "blog/index.html").read_text(encoding="utf-8")
+def test_blog_index_shows_excerpt_author_and_reading_time(
+    site_text: dict[Path, str],
+) -> None:
+    index = site_text[Path("blog/index.html")]
     assert "Published fixture post" in index
     assert "PUBLISHED-EXCERPT-MARKER" in index
     assert "PUBLISHED-BODY-MARKER" not in index
@@ -64,18 +68,24 @@ def test_blog_index_shows_excerpt_author_and_reading_time(built_site: Path) -> N
     assert "min read" in index
 
 
-def test_published_post_is_in_archive(built_site: Path) -> None:
-    archive = [
-        text
-        for path, text in _text_files(built_site).items()
-        if path.suffix == ".html" and "archive" in path.parts
+def test_blog_index_paginates_newest_first(site_text: dict[Path, str]) -> None:
+    first = site_text[Path("blog/index.html")]
+    second = site_text[Path("blog/page/2/index.html")]
+    assert "Published fixture post" in first
+    assert "Older published fixture post" not in first
+    assert "Older published fixture post" in second
+
+
+def test_published_posts_are_in_archive(site_text: dict[Path, str]) -> None:
+    archive = site_text[Path("blog/archive/2026/index.html")] + site_text[
+        Path("blog/archive/2026/page/2/index.html")
     ]
-    assert archive, "no archive page generated"
-    assert any("Published fixture post" in text for text in archive)
+    assert "Published fixture post" in archive
+    assert "Older published fixture post" in archive
 
 
-def test_published_post_is_in_search_index(built_site: Path) -> None:
-    search = (built_site / "search.json").read_text(encoding="utf-8")
+def test_published_post_is_in_search_index(site_text: dict[Path, str]) -> None:
+    search = site_text[Path("search.json")]
     assert "Published fixture post" in search
     assert "PUBLISHED-BODY-MARKER" in search
 
@@ -86,13 +96,16 @@ def test_published_post_is_in_search_index(built_site: Path) -> None:
         "Hidden fixture post",
         "HIDDEN-EXCERPT-MARKER",
         "HIDDEN-BODY-MARKER",
-        "hidden-post",
+        "hidden-fixture-post",
     ],
 )
 def test_hidden_post_appears_nowhere_in_built_site(
-    built_site: Path, needle: str
+    site_text: dict[Path, str], needle: str
 ) -> None:
-    leaks = [
-        str(path) for path, text in _text_files(built_site).items() if needle in text
-    ]
+    # Guard against vacuous passes: the hidden post's source is part of the
+    # fixture, and the blog it would have joined was built.
+    assert (FIXTURE / "content/blog/posts/hidden-post.md").is_file()
+    assert "Published fixture post" in site_text[Path("blog/index.html")]
+
+    leaks = [str(path) for path, text in site_text.items() if needle in text]
     assert leaks == []
