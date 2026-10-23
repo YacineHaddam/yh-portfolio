@@ -11,6 +11,7 @@ from pathlib import Path
 import pytest
 
 FIXTURE = Path(__file__).parent / "fixture_site"
+BAD_CATEGORY_FIXTURE = Path(__file__).parent / "fixture_bad_category"
 ZENSICAL = Path(sys.executable).parent / "zensical"
 
 SECTION_PAGES = {
@@ -109,3 +110,52 @@ def test_hidden_post_appears_nowhere_in_built_site(
 
     leaks = [str(path) for path, text in site_text.items() if needle in text]
     assert leaks == []
+
+
+def test_published_post_is_on_its_category_page(site_text: dict[Path, str]) -> None:
+    page = site_text[Path("blog/category/engineering/index.html")]
+    assert "Published fixture post" in page
+
+
+def test_published_post_is_on_its_tag_listing(site_text: dict[Path, str]) -> None:
+    tags = site_text[Path("tags/index.html")]
+    assert "published-fixture-tag" in tags
+    assert "shared-fixture-tag" in tags
+    assert "Published fixture post" in tags
+
+
+def test_published_post_shows_categories_and_tags(site_text: dict[Path, str]) -> None:
+    post = next(
+        text
+        for path, text in site_text.items()
+        if path.suffix == ".html" and "PUBLISHED-BODY-MARKER" in text
+    )
+    assert "engineering" in post
+    assert "published-fixture-tag" in post
+
+
+def test_published_posts_are_in_rss_feed(site_text: dict[Path, str]) -> None:
+    feed = site_text[Path("feed_rss_created.xml")]
+    assert "Published fixture post" in feed
+    assert "PUBLISHED-EXCERPT-MARKER" in feed
+
+
+@pytest.mark.parametrize("needle", ["hidden-fixture-tag", "category/notes"])
+def test_hidden_post_taxonomy_appears_nowhere(
+    site_text: dict[Path, str], needle: str
+) -> None:
+    assert "Published fixture post" in site_text[Path("tags/index.html")]
+    leaks = [str(path) for path, text in site_text.items() if needle in text]
+    assert leaks == []
+
+
+def test_disallowed_category_fails_the_build() -> None:
+    result = subprocess.run(
+        [str(ZENSICAL), "build", "--strict", "--clean"],
+        cwd=BAD_CATEGORY_FIXTURE,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode != 0
+    assert "not-an-allowed-category" in result.stderr
+    assert "outside categories_allowed" in result.stderr

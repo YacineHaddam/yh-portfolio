@@ -2,6 +2,10 @@
 date: 2026-10-21
 authors:
   - yacine
+categories:
+  - notes
+tags:
+  - meta
 ---
 
 # Hello, world

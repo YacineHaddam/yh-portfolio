@@ -1,0 +1,5 @@
+authors:
+  fixture:
+    name: Fixture Author
+    description: Author used by the fixture project
+    avatar: https://example.com/avatar.png

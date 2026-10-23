@@ -1,0 +1,8 @@
+[project]
+site_name = "Bad category fixture"
+docs_dir = "content"
+site_dir = "site"
+
+[project.plugins.blog]
+post_excerpt = "required"
+categories_allowed = ["engineering", "machine-learning", "career", "notes"]
