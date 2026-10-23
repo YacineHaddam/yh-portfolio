@@ -1,18 +1,26 @@
 #!/usr/bin/env bash
-# Keep a local, gitignored copy of the Zensical docs in references/zensical-docs/.
-# Source: https://github.com/zensical/docs (MIT), Markdown under docs/.
+# Keep local, gitignored copies of the reference docs under references/.
+# Each entry is "<dest name> <repo url> <sparse paths...>"; only those paths are fetched.
 set -euo pipefail
 
-REPO="https://github.com/zensical/docs.git"
-DEST="references/zensical-docs"
+SOURCES=(
+    "zensical-docs https://github.com/zensical/docs.git docs"
+    "mkdocs-material https://github.com/squidfunk/mkdocs-material.git docs/reference docs/setup"
+)
 
-if [ -d "$DEST/.git" ]; then
-    git -C "$DEST" pull --ff-only --quiet
-else
-    mkdir -p "$(dirname "$DEST")"
-    git clone --depth 1 --filter=blob:none --sparse --quiet "$REPO" "$DEST"
-    git -C "$DEST" sparse-checkout set docs
-fi
+for source in "${SOURCES[@]}"; do
+    read -r name repo paths <<< "$source"
+    dest="references/$name"
 
-echo "$(git -C "$DEST" rev-parse HEAD) $(date +%F)" > "$DEST/.refreshed"
-echo "Zensical docs at $(cut -c1-7 "$DEST/.refreshed") in $DEST ($(find "$DEST/docs" -name '*.md' | wc -l | tr -d ' ') Markdown files)"
+    if [ -d "$dest/.git" ]; then
+        git -C "$dest" pull --ff-only --quiet
+    else
+        mkdir -p references
+        git clone --depth 1 --filter=blob:none --sparse --quiet "$repo" "$dest"
+        # shellcheck disable=SC2086 # $paths is a deliberate word list
+        git -C "$dest" sparse-checkout set $paths
+    fi
+
+    echo "$(git -C "$dest" rev-parse HEAD) $(date +%F)" > "$dest/.refreshed"
+    echo "$name at $(cut -c1-7 "$dest/.refreshed"): $(find "$dest" -name '*.md' -not -path '*/.git/*' | wc -l | tr -d ' ') Markdown files"
+done

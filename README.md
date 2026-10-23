@@ -45,15 +45,22 @@ make refresh-docs
 Merge the upgrade only if `make check` passes. Rebuild with `--clean` after upgrading
 (`make check` already does).
 
-## Zensical docs for reference
+## Docs for reference
 
 ```sh
 make refresh-docs
 ```
 
-Keeps a local, gitignored copy of the [Zensical docs](https://github.com/zensical/docs)
-in `references/zensical-docs/`. Refresh it about weekly and after every Zensical upgrade.
-`references/zensical-docs/.refreshed` records the upstream commit and the date.
+Keeps local, gitignored copies of the docs in `references/`. Refresh them about weekly
+and after every Zensical upgrade. Each folder has a `.refreshed` file recording the
+upstream commit and the date.
+
+- `references/zensical-docs/`: the [Zensical docs](https://github.com/zensical/docs).
+- `references/mkdocs-material/`: the reference and setup pages of the
+  [Material for MkDocs docs](https://squidfunk.github.io/mkdocs-material/reference/),
+  as background. Zensical is its successor.
+
+To add another source, add a line to the list in `scripts/refresh-docs.sh`.
 
 ## Layout
 
