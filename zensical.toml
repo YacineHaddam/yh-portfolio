@@ -3,7 +3,7 @@ site_name = "Yacine Haddam"
 site_description = "Portfolio and blog"
 # TODO(author): replace the placeholder with the real GitHub Pages address (ticket 02).
 # Social cards and Open Graph image URLs are built from this.
-site_url = "https://your-github-handle.github.io/yh-portfolio/"
+site_url = "https://YacineHaddam.github.io/yh-portfolio/"
 docs_dir = "content"
 site_dir = "site"
 nav = [
