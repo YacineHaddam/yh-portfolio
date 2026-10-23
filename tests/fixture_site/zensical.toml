@@ -11,3 +11,9 @@ nav = [
 
 [project.theme]
 variant = "modern"
+
+[project.plugins.blog]
+post_excerpt = "required"
+pagination = true
+archive = true
+post_readtime = true

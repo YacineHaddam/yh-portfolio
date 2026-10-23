@@ -14,12 +14,22 @@ See the spec: Content model (Blog, Post states).
 
 **Status:** ready-for-agent
 
-- [ ] Zensical's native blog plugin is enabled. The author profile is defined once and referenced by posts.
-- [ ] Posts have `date` (required), optional `updated`, `authors` and an optional boolean `draft`.
-- [ ] The blog index shows excerpts cut at the "more" marker, plus reading time, and paginates.
-- [ ] A date-based archive exists.
-- [ ] The fixture project contains at least one published and one hidden post.
-- [ ] Built-site check: the published fixture appears on its own page, the blog index, the archive and the search index.
-- [ ] Built-site check: the hidden fixture's title and unique marker text appear in **no** generated HTML file and not in the search index.
+- [x] Zensical's native blog plugin is enabled. The author profile is defined once and referenced by posts.
+- [x] Posts have `date` (required), optional `updated`, `authors` and an optional boolean `draft`.
+- [x] The blog index shows excerpts cut at the "more" marker, plus reading time, and paginates.
+- [x] A date-based archive exists.
+- [x] The fixture project contains at least one published and one hidden post.
+- [x] Built-site check: the published fixture appears on its own page, the blog index, the archive and the search index.
+- [x] Built-site check: the hidden fixture's title and unique marker text appear in **no** generated HTML file and not in the search index.
 - [ ] Verified manually: a hidden post is visible in local preview.
-- [ ] One placeholder real post exists so the real Blog section isn't empty.
+- [x] One placeholder real post exists so the real Blog section isn't empty.
+
+## Comments
+
+### 2026-10-21
+
+Implemented: blog plugin enabled in the real and fixture configs (excerpts, pagination, archive, reading time), author defined once in `content/blog/.authors.yml`, a published and a hidden fixture post, a placeholder real post, and built-site tests.
+
+Verified: `zensical build --strict` passes on the real site, and `pytest` passes (12 tests). Flipping the hidden fixture to `draft: false` made 3 of the hiding tests fail, so those tests do bite.
+
+Not verified: that a hidden post shows in local preview. `zensical serve` was denied in the agent sandbox, so that criterion stays unticked and the ticket is not marked done.
