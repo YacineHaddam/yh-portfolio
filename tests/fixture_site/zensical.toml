@@ -13,6 +13,21 @@ nav = [
 [project.theme]
 variant = "modern"
 
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/fixture-user"
+name = "GitHub"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/linkedin"
+link = "https://www.linkedin.com/in/fixture-user"
+name = "LinkedIn"
+
+[[project.extra.social]]
+icon = "fontawesome/solid/paper-plane"
+link = "mailto:fixture@example.com"
+name = "Email"
+
 [project.markdown_extensions]
 attr_list = {}
 md_in_html = {}

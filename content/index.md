@@ -1,7 +1,7 @@
-# Home
+# Yacine Haddam
 
-Placeholder. Intro and links go here.
+Placeholder intro: who I am and what I do, in a sentence or two.
 
-- [Projects](projects/index.md)
-- [Blog](blog/index.md)
-- [About](about.md)
+- [Projects](projects/index.md): what I have built.
+- [Blog](blog/index.md): what I am writing and learning.
+- [About](about.md): my CV and how to reach me.

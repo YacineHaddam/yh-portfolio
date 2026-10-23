@@ -195,3 +195,20 @@ def test_project_without_links_has_no_link_section(site_text: dict[Path, str]) -
 
 def test_projects_index_shows_no_unrendered_template(site_text: dict[Path, str]) -> None:
     assert "project_cards" not in site_text[Path("projects/index.html")]
+
+
+@pytest.mark.parametrize(
+    "link",
+    [
+        "https://github.com/fixture-user",
+        "https://www.linkedin.com/in/fixture-user",
+        "mailto:fixture@example.com",
+    ],
+)
+def test_contact_links_render_on_every_page(
+    site_text: dict[Path, str], link: str
+) -> None:
+    pages = {path: text for path, text in site_text.items() if path.suffix == ".html"}
+    assert Path("about/index.html") in pages
+    missing = [str(path) for path, text in pages.items() if f'href="{link}"' not in text]
+    assert missing == []

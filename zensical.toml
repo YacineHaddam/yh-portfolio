@@ -53,3 +53,20 @@ media = "(prefers-color-scheme: dark)"
 scheme = "slate"
 toggle.icon = "lucide/moon"
 toggle.name = "Switch to system preference"
+
+# Contact links, shown in the footer of every page.
+# TODO(author): replace the placeholder handles and address with your own.
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/your-github-handle"
+name = "GitHub"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/linkedin"
+link = "https://www.linkedin.com/in/your-linkedin-handle"
+name = "LinkedIn"
+
+[[project.extra.social]]
+icon = "fontawesome/solid/paper-plane"
+link = "mailto:you@example.com"
+name = "Email"
