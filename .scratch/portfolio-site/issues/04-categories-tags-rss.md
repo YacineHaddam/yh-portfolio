@@ -32,6 +32,6 @@ Verified: `pytest` passes (20 tests) and `zensical build --strict` passes on the
 
 Notes and not verified:
 - The tags plugin renders all tags on one `/tags/` page, with a section per tag, rather than a separate page per tag.
-- The RSS feed is scoped to `blog/posts/.*` so it holds posts only, not site pages. The feeds are `feed_rss_created.xml` and `feed_rss_updated.xml`.
+- The RSS feed is scoped to `blog/posts/.*` in both the real and fixture configs, so it holds posts only, not site pages. The real site build was checked: its feed holds only the placeholder post. The nav has a Tags entry. The feeds are `feed_rss_created.xml` and `feed_rss_updated.xml`.
 - Builds need a time zone database. In the agent sandbox `/usr/share/zoneinfo` is unreadable, so the tests ran with `TZDIR` pointing at the `tzdata` package (added to `pyproject.toml`). Not checked without `TZDIR`, or in CI.
 - The visual look of the categories and tags on a post was not checked in a browser. The tests only check that they are in the HTML.
