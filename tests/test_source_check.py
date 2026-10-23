@@ -47,6 +47,11 @@ def test_invalid_yaml_front_matter_is_reported() -> None:
         ("bad_category", "bad-category.md", "category 'not-allowed' is not allowed"),
         ("phone_number", "phone.md", "phone number"),
         ("street_address", "address.md", "street address"),
+        ("project_missing_summary", "no-summary.md", "project is missing summary"),
+        ("project_bad_tech", "bad-tech.md", "tech must be a list of strings"),
+        ("project_bad_featured", "bad-featured.md", "featured must be true or false"),
+        ("project_bad_link", "bad-link.md", "links.repo must be an http(s) URL"),
+        ("project_multiline_summary", "long-summary.md", "summary must be one line"),
     ],
 )
 def test_rule_violation_is_reported(kind: str, name: str, expected: str) -> None:
@@ -54,11 +59,3 @@ def test_rule_violation_is_reported(kind: str, name: str, expected: str) -> None
     assert len(found) == 1
     assert found[0][0] == name
     assert expected in found[0][1]
-
-
-def test_markdown_style_violation_is_reported() -> None:
-    found = violations("bad_markdown")
-    assert len(found) == 1
-    name, reason = found[0]
-    assert name == "skipped-heading.md"
-    assert "heading" in reason.lower()

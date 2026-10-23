@@ -1,3 +1,3 @@
 # Projects
 
-Fixture projects page.
+{{ project_cards() }}

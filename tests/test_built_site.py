@@ -159,3 +159,39 @@ def test_disallowed_category_fails_the_build() -> None:
     assert result.returncode != 0
     assert "not-an-allowed-category" in result.stderr
     assert "outside categories_allowed" in result.stderr
+
+
+@pytest.mark.parametrize(
+    ("title", "summary", "tech", "page"),
+    [
+        ("Alpha fixture project", "ALPHA-SUMMARY-MARKER", "alpha-tech", "projects/alpha-project/index.html"),
+        ("Beta fixture project", "BETA-SUMMARY-MARKER", "beta-tech", "projects/beta-project/index.html"),
+    ],
+)
+def test_every_project_is_a_card_on_the_projects_index(
+    site_text: dict[Path, str], title: str, summary: str, tech: str, page: str
+) -> None:
+    index = site_text[Path("projects/index.html")]
+    assert "grid cards" in index
+    assert title in index
+    assert summary in index
+    assert tech in index
+    assert Path(page) in site_text
+    assert f'href="{Path(page).parent.name}/"' in index
+
+
+def test_project_page_links_out_to_repo_and_demo(site_text: dict[Path, str]) -> None:
+    page = site_text[Path("projects/alpha-project/index.html")]
+    assert "ALPHA-BODY-MARKER" in page
+    assert "https://github.com/example/alpha" in page
+    assert "https://example.com/alpha-demo" in page
+
+
+def test_project_without_links_has_no_link_section(site_text: dict[Path, str]) -> None:
+    page = site_text[Path("projects/beta-project/index.html")]
+    assert "BETA-BODY-MARKER" in page
+    assert "github.com/example" not in page
+
+
+def test_projects_index_shows_no_unrendered_template(site_text: dict[Path, str]) -> None:
+    assert "project_cards" not in site_text[Path("projects/index.html")]

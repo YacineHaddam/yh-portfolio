@@ -11,6 +11,10 @@ nav = [
     { "About" = "about.md" },
 ]
 
+[project.markdown_extensions]
+attr_list = {}
+md_in_html = {}
+
 [project.plugins.blog]
 post_excerpt = "required"
 pagination = true
@@ -23,6 +27,12 @@ categories_allowed = ["engineering", "machine-learning", "career", "notes"]
 
 [project.plugins.rss]
 match_path = "blog/posts/.*"
+
+# Jinja runs only on the Projects pages: the index card grid and each project's links (see docs/adr/0001).
+[project.plugins.macros]
+render_by_default = false
+force_render_paths = "projects/*.md"
+on_error_fail = true
 
 [project.theme]
 variant = "modern"
