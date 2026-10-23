@@ -1,5 +1,7 @@
 [project]
 site_name = "Fixture site"
+site_description = "Fixture site description"
+site_url = "https://fixture.example.com/portfolio/"
 docs_dir = "content"
 site_dir = "site"
 nav = [
@@ -44,6 +46,8 @@ categories_allowed = ["engineering", "machine-learning", "career", "notes"]
 
 [project.plugins.rss]
 match_path = "blog/posts/.*"
+
+[project.plugins.social]
 
 # Jinja runs only on the Projects pages: the index card grid and each project's links.
 [project.plugins.macros]
