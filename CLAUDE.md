@@ -16,7 +16,7 @@ Single-context: one `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/ag
 
 ## Working on tickets
 
-- Every commit message names the spec (the `.scratch/<feature>` folder name) and the ticket number, as `Spec: <feature>` and `Ticket: <NN>` lines before the Co-Authored-By line. This applies to follow-up and fix commits too.
+- Every commit made while implementing a ticket MUST name the spec (the `.scratch/<feature>` folder name) and the ticket number, as `Spec: <feature>` and `Ticket: <NN>` lines before the Co-Authored-By line. This applies to every commit within the ticket's scope, including follow-up, fix and review commits. Check the lines are present before committing. Commits outside any ticket (for example repo tooling or docs) leave both lines out.
 - When a ticket is finished, set its `status: done`, tick its acceptance criteria and add a dated entry under `## Comments` saying what was and wasn't verified.
 - Tick only the criteria you verified. If one can't be verified yet (for example CI before a workflow exists), leave it unticked and say why in the comment.
 
@@ -46,7 +46,7 @@ If one of them fails, report the exact error and ask the user to run it with `! 
 
 - Commit when asked, or when the workflow in use says to (for example `/implement`). Commit to the current branch.
 - Stage explicit paths, not `git add -A` or `git add .`, and look at `git status` before and after so nothing stray goes in or is left behind.
-- Message: a short imperative subject, a line or two on what and why, then the `Spec:` and `Ticket:` lines, then the Co-Authored-By line.
+- Message: a short imperative subject, a line or two on what and why, then the `Spec:` and `Ticket:` lines (required for ticket work, see "Working on tickets"), then the Co-Authored-By line.
 - Fixes found in review go in a separate follow-up commit with the same `Spec:` and `Ticket:` lines.
 
 ## Reference docs
