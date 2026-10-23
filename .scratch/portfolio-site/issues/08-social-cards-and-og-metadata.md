@@ -25,13 +25,8 @@ See the spec: Site features (Social cards).
 
 Implemented with a placeholder `site_url` (`https://your-github-handle.github.io/yh-portfolio/`) in `zensical.toml`, because ticket 02 isn't done. Replace it when 02 lands.
 
-Verified: `make check` passes (source check on real and fixture content, strict build, 54 tests), including the new `tests/test_social_cards.py`.
+Verified: `make check` passes (source check on real and fixture content, strict build, 54 tests), including `tests/test_social_cards.py`. After review, the tests were tightened and `make check` passed again: every generated card must be referenced by a built page's `og:image` (so a hidden post's card would fail), `og:title` must contain the post title, `twitter:card` must be `summary_large_image`, and meta tags are parsed regardless of attribute order.
 
 Not verified: the live-site preview-debugger criterion, which needs the deployed site (ticket 02). Status stays `ready-for-agent` until then.
 
-Review follow-ups, not done:
-
-- The hidden-post test only checks that no card filename contains "hidden". Compare the set of cards against the published pages instead.
-- `og:title` and `og:description` are only checked for non-emptiness.
-- The fixture imports in `test_social_cards.py` would sit better in a `conftest.py`.
-- The `_meta` regex depends on attribute order.
+Left open from review: the fixture imports in `test_social_cards.py` would sit better in a shared `conftest.py`.
