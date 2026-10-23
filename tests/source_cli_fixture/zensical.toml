@@ -1,0 +1,5 @@
+[project]
+docs_dir = "../source_fixtures/bad_category"
+
+[project.plugins.blog]
+categories_allowed = ["engineering", "machine-learning", "career", "notes"]

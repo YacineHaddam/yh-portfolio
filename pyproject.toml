@@ -10,8 +10,10 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "pymarkdownlnt>=0.9.41",
     "pytest>=8",
 ]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["tools"]

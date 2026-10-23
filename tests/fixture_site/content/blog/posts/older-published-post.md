@@ -2,6 +2,8 @@
 date: 2026-01-10
 authors:
   - fixture
+categories:
+  - engineering
 ---
 
 # Older published fixture post
