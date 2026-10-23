@@ -31,6 +31,28 @@ the real site (so a broken internal link fails it), then the tests. The tests in
 the built-site check, which builds a separate fixture project in `tests/fixture_site/`
 and asserts on its generated output only.
 
+## Deploy
+
+`.github/workflows/docs.yml` runs `make check` on every pull request and on every push
+to `main`. A push to `main` then builds the site with `--strict --clean` and deploys it
+to GitHub Pages, but only if `check` passed. Pull requests never deploy. The workflow
+installs the locked `uv` environment without caching, as the Zensical docs advise.
+
+The site is served at `https://<github-user>.github.io/yh-portfolio/`. The base URL is
+the single `site_url` value in `zensical.toml`.
+
+## Custom domain
+
+To move to a custom domain later:
+
+1. Change `site_url` in `zensical.toml` to the new address (for example
+   `https://example.com/`).
+2. Add a `CNAME` file containing the bare domain (`example.com`) to `content/`, so it
+   is copied to the site root on every build.
+3. Add the DNS record at your registrar, then set the custom domain in the repo's
+   Settings → Pages. See the
+   [GitHub Pages docs](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site).
+
 ## Upgrading Zensical
 
 Zensical is alpha and pinned to an exact version in `pyproject.toml`.
@@ -69,3 +91,4 @@ To add another source, add a line to the list in `scripts/refresh-docs.sh`.
 - `tools/`: the source check (`source_check.py`)
 - `tests/`: the source check and built-site check, with their fixtures
 - `scripts/`: helper scripts (`refresh-docs.sh`)
+- `.github/workflows/`: CI and deploy (`docs.yml`)
