@@ -1,0 +1,13 @@
+[project]
+site_name = "Fixture site"
+docs_dir = "content"
+site_dir = "site"
+nav = [
+    { "Home" = "index.md" },
+    { "Projects" = "projects/index.md" },
+    { "Blog" = "blog/index.md" },
+    { "About" = "about.md" },
+]
+
+[project.theme]
+variant = "modern"

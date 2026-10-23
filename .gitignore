@@ -1,0 +1,15 @@
+# Build output and Zensical cache
+site/
+tests/fixture_site/site/
+.cache/
+
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+
+# Project-local uv cache and Python interpreter
+.uv-cache/
+.uv-python/
+
+.DS_Store

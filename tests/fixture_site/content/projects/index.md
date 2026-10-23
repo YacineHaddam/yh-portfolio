@@ -1,0 +1,3 @@
+# Projects
+
+Fixture projects page.

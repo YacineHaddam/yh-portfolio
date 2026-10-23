@@ -1,0 +1,16 @@
+[project]
+name = "yh-portfolio"
+version = "0.1.0"
+description = "Personal portfolio and blog built with Zensical"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "zensical==0.0.71",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
