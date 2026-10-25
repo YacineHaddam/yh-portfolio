@@ -9,11 +9,17 @@ nav = [
     { "Projects" = "projects/index.md" },
     { "Blog" = "blog/index.md" },
     { "Tags" = "tags.md" },
+    { "Authoring" = "authoring.md" },
     { "About" = "about.md" },
+]
+extra_javascript = [
+    "javascripts/mathjax.js",
+    "https://unpkg.com/mathjax@3.2.2/es5/tex-mml-chtml.js",
 ]
 
 [project.theme]
 variant = "modern"
+features = ["content.code.copy"]
 
 [[project.extra.social]]
 icon = "fontawesome/brands/github"
@@ -33,6 +39,15 @@ name = "Email"
 [project.markdown_extensions]
 attr_list = {}
 md_in_html = {}
+admonition = {}
+tables = {}
+pymdownx.details = {}
+pymdownx.superfences = {}
+pymdownx.inlinehilite = {}
+pymdownx.highlight.anchor_linenums = true
+pymdownx.highlight.line_spans = "__span"
+pymdownx.highlight.pygments_lang_class = true
+pymdownx.arithmatex.generic = true
 
 [project.plugins.blog]
 post_excerpt = "required"
