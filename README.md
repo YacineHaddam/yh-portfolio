@@ -26,10 +26,10 @@ Starts the live-reload preview server (default http://localhost:8000).
 make check
 ```
 
-Runs the source Markdown check on the real and fixture content, then a strict build of
-the real site (so a broken internal link fails it), then the tests. The tests include
-the built-site check, which builds a separate fixture project in `tests/fixture_site/`
-and asserts on its generated output only.
+Lints the Python with ruff, runs the source Markdown check on the real and fixture
+content, then a strict build of the real site (so a broken internal link fails it), then
+the tests. The tests include the built-site check, which builds a separate fixture
+project in `tests/fixture_site/` and asserts on its generated output only.
 
 ## Deploy
 

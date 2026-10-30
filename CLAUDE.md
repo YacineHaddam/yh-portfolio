@@ -34,7 +34,7 @@ If one of them fails, report the exact error and ask the user to run it with `! 
 
 - Work test-first in vertical slices: one failing test, then the minimum code to pass it. Confirm the test fails for the right reason before writing the code.
 - Tests assert on observable behaviour: the violations the source check reports, or what is present in the built site. Never on internals, config structure or real content (fixtures only).
-- While iterating, run single test files (`uv run pytest tests/test_x.py`). Before every commit run `make check` (source check, strict build, pytest) and report its real output.
+- While iterating, run single test files (`uv run pytest tests/test_x.py`). Before every commit run `make check` (the `Makefile` lists what it runs) and report its real output.
 
 ## Dependencies
 
