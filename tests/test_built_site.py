@@ -1,18 +1,12 @@
 """Built-site check: builds a fixture project and asserts on the generated output.
 
 Only the generated output directory is inspected, never the config or templates,
-so these tests survive Zensical upgrades.
+so these tests survive Zensical upgrades. The shared fixtures are in conftest.py.
 """
 
-import subprocess
-import sys
 from pathlib import Path
 
 import pytest
-
-FIXTURE = Path(__file__).parent / "fixture_site"
-BAD_CATEGORY_FIXTURE = Path(__file__).parent / "fixture_bad_category"
-ZENSICAL = Path(sys.executable).parent / "zensical"
 
 SECTION_PAGES = {
     "Home": "index.html",
@@ -20,28 +14,6 @@ SECTION_PAGES = {
     "Blog": "blog/index.html",
     "About": "about/index.html",
 }
-
-TEXT_SUFFIXES = {".html", ".json", ".xml", ".txt"}
-
-
-@pytest.fixture(scope="session")
-def built_site() -> Path:
-    subprocess.run(
-        [str(ZENSICAL), "build", "--strict", "--clean"],
-        cwd=FIXTURE,
-        check=True,
-    )
-    return FIXTURE / "site"
-
-
-@pytest.fixture(scope="session")
-def site_text(built_site: Path) -> dict[Path, str]:
-    """Every text file in the built site, keyed by its path relative to the site."""
-    return {
-        p.relative_to(built_site): p.read_text(encoding="utf-8", errors="replace")
-        for p in sorted(built_site.rglob("*"))
-        if p.is_file() and p.suffix in TEXT_SUFFIXES
-    }
 
 
 @pytest.mark.parametrize("section", SECTION_PAGES)
@@ -101,11 +73,11 @@ def test_published_post_is_in_search_index(site_text: dict[Path, str]) -> None:
     ],
 )
 def test_hidden_post_appears_nowhere_in_built_site(
-    site_text: dict[Path, str], needle: str
+    site_text: dict[Path, str], fixture_dir: Path, needle: str
 ) -> None:
     # Guard against vacuous passes: the hidden post's source is part of the
     # fixture, and the blog it would have joined was built.
-    assert (FIXTURE / "content/blog/posts/hidden-post.md").is_file()
+    assert (fixture_dir / "content/blog/posts/hidden-post.md").is_file()
     assert "Published fixture post" in site_text[Path("blog/index.html")]
 
     leaks = [str(path) for path, text in site_text.items() if needle in text]
@@ -149,13 +121,8 @@ def test_hidden_post_taxonomy_appears_nowhere(
     assert leaks == []
 
 
-def test_disallowed_category_fails_the_build() -> None:
-    result = subprocess.run(
-        [str(ZENSICAL), "build", "--strict", "--clean"],
-        cwd=BAD_CATEGORY_FIXTURE,
-        capture_output=True,
-        text=True,
-    )
+def test_disallowed_category_fails_the_build(build_strict, bad_category_dir: Path) -> None:
+    result = build_strict(bad_category_dir, capture_output=True, text=True)
     assert result.returncode != 0
     assert "not-an-allowed-category" in result.stderr
     assert "outside categories_allowed" in result.stderr

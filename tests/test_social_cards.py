@@ -4,7 +4,6 @@ import re
 from pathlib import Path
 
 import pytest
-from test_built_site import FIXTURE, built_site, site_text  # noqa: F401  (fixtures)
 
 FIXTURE_SITE_URL = "https://fixture.example.com/portfolio/"
 CARDS_DIR = "assets/images/social"
@@ -63,10 +62,10 @@ def test_published_post_has_a_generated_card_image(
 
 
 def test_every_card_belongs_to_a_built_page_so_hidden_posts_get_none(
-    built_site: Path, site_text: dict[Path, str]
+    built_site: Path, site_text: dict[Path, str], fixture_dir: Path
 ) -> None:
     # Guard against vacuous passes: the hidden post's source exists, and cards were made.
-    assert (FIXTURE / "content/blog/posts/hidden-post.md").is_file()
+    assert (fixture_dir / "content/blog/posts/hidden-post.md").is_file()
     cards = {
         p.relative_to(built_site).as_posix()
         for p in (built_site / CARDS_DIR).rglob("*")

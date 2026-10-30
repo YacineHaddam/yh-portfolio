@@ -5,7 +5,6 @@ import re
 from pathlib import Path
 
 import pytest
-from test_built_site import built_site, site_text  # noqa: F401  (fixtures)
 
 PAGE = Path("authoring/index.html")
 
