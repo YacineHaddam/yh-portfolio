@@ -12,8 +12,6 @@ See the spec: `.scratch/portfolio-site/spec.md` (Platform and tooling; Check mod
 
 **Blocked by:** None (can start immediately)
 
-**Status:** done
-
 - [x] Zensical is pinned to an exact version via `uv`, on Python 3.12, with a committed lockfile. A fresh clone plus `uv sync` reproduces the environment.
 - [x] Config uses native `zensical.toml`. The content lives in a subdirectory, not the repo root.
 - [x] The `modern` theme is used, with light and dark palettes that follow the system preference and have a toggle.

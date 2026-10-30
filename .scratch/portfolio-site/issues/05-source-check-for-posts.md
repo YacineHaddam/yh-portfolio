@@ -12,8 +12,6 @@ See the spec: Check modules (Source check).
 
 **Blocked by:** 04 (Categories, tags and RSS)
 
-**Status:** done
-
 - [x] Input is a content directory and the category allow-list (one source of truth shared with the site config). Output is a list of violations, and it exits non-zero if there are any.
 - [x] It fails on: invalid YAML front matter, a missing `date`/`title`/`categories` on a post, a malformed date, a non-boolean `draft`, or a category not in the allow-list.
 - [x] It flags phone-number-like and street-address-like patterns in public content.

@@ -12,8 +12,6 @@ See the spec: Content model (Blog, Tags); Site features (RSS).
 
 **Blocked by:** 03 (Blog with published and hidden posts)
 
-**Status:** done
-
 - [x] Category allow-list starts as `engineering`, `machine-learning`, `career` and `notes`, and is easy to edit.
 - [x] Each category has a listing page. The native tags plugin gives each tag a listing page.
 - [x] The native RSS plugin produces a feed of published posts.

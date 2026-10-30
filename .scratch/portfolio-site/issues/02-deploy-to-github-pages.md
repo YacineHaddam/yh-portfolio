@@ -12,8 +12,6 @@ The human-only steps get a `/wizard` script: creating the public `yh-portfolio` 
 
 **Blocked by:** 01 (Site skeleton that builds, with a check command)
 
-**Status:** done
-
 - [x] The CI workflow installs the locked `uv` environment (no dependency caching, per Zensical docs) and runs `check`.
 - [x] PRs run `check` but never deploy. `main` runs `check`, builds with strict and clean, and deploys.
 - [x] A failing `check` blocks deployment.

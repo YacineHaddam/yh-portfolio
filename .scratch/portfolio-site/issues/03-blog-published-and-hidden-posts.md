@@ -12,8 +12,6 @@ See the spec: Content model (Blog, Post states).
 
 **Blocked by:** 01 (Site skeleton that builds, with a check command)
 
-**Status:** done
-
 - [x] Zensical's native blog plugin is enabled. The author profile is defined once and referenced by posts.
 - [x] Posts have `date` (required), optional `updated`, `authors` and an optional boolean `draft`.
 - [x] The blog index shows excerpts cut at the "more" marker, plus reading time, and paginates.

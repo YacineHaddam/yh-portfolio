@@ -12,8 +12,6 @@ See the spec: Content model (Projects).
 
 **Blocked by:** 01 (Site skeleton that builds, with a check command), 05 (Source Markdown check for posts)
 
-**Status:** done
-
 - [x] Project front matter: `title` (string), `summary` (one-line string), `tech` (list of strings), `links` (optional `repo` and `demo` URLs), `featured` (boolean) and optional `cover` (image path).
 - [x] The project page body template guides a short case study: problem, what was built, result.
 - [x] The Projects index renders every project as a grid card automatically. If Zensical can't generate this without Python, document the chosen approach and its trade-off in an ADR.

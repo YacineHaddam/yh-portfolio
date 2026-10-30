@@ -14,8 +14,6 @@ See the spec: Example content; Further Notes (example series).
 
 **Blocked by:** 02 (Deploy to GitHub Pages via CI), 04 (Categories, tags and RSS), 05 (Source Markdown check for posts), 08 (Social cards and Open Graph metadata)
 
-**Status:** ready-for-human
-
 - [ ] The post is written on a `post/tsfm-part-1` branch, with `draft: true`, a category, tags (including a shared series tag), an excerpt marker, at least one code block and one maths expression.
 - [x] The series convention is used: a shared tag, a consistent title prefix and a placeholder "next in series" link.
 - [x] The PR passes `check` and is merged while still hidden. Verified: the post is absent from the live site, RSS and search.

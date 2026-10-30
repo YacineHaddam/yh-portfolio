@@ -12,8 +12,6 @@ See the spec: Site features (Social cards).
 
 **Blocked by:** 02 (Deploy to GitHub Pages via CI; provides `site_url`), 03 (Blog with published and hidden posts)
 
-**Status:** done
-
 - [x] Zensical's native social plugin is enabled.
 - [x] Built-site check: each published fixture post has a generated card image, plus `og:title`, `og:description`, `og:image` and `twitter:card` meta tags. The `og:image` URL is absolute and based on `site_url`.
 - [x] Built-site check: no card image is generated for a hidden fixture post.

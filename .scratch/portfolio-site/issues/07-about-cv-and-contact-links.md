@@ -12,8 +12,6 @@ See the spec: Content model (About); Homepage.
 
 **Blocked by:** 01 (Site skeleton that builds, with a check command)
 
-**Status:** done
-
 - [x] The About page is structured as a CV: summary, experience, skills and education, with placeholder content for the author to fill in.
 - [ ] An optional CV PDF link points to a site asset. The page works if the PDF is absent.
 - [x] GitHub, LinkedIn and email links appear site-wide (header or footer social links).
